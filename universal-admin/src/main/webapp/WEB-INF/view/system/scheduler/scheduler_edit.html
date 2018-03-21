@@ -1,0 +1,38 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <input type="hidden" id="id" value="${item.id}">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="id" name="" value="${item.id}" underline="true"/>
+                            <#input id="name" name="调度名" value="${item.name}" underline="true"/>
+                            <#input id="cron" name="cron表达式" value="${item.cron}" underline="true"/>
+                            <#input id="initParam" name="初始化参数,以#号隔开" value="${item.initParam}" underline="true"/>
+                            <#input id="paramDesc" name="初始化参数描述" value="${item.paramDesc}" underline="true"/>
+                            <#input id="jobClass" name="Job类的全路径" value="${item.jobClass}" />
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="schedulerGroup" name="调用分组" value="${item.schedulerGroup}" underline="true"/>
+                            <#input id="url" name="调用地址" value="${item.url}" underline="true"/>
+                            <#input id="tokenUrl" name="" value="${item.tokenUrl}" underline="true"/>
+                            <#input id="connType" name="" value="${item.connType}" underline="true"/>
+                            <#input id="remark" name="备注" value="${item.remark}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="SchedulerInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="SchedulerInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/scheduler/scheduler_info.js"></script>
+@}

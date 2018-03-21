@@ -1,0 +1,61 @@
+package ${client.packageName};
+
+<% for(import in client.imports!){ %>
+import ${import};
+<% } %>
+
+/**
+ * ${context.bizChName}调度
+ *
+ * @author chenkx
+ * @Date ${tool.currentTime()}
+ */
+
+public class ${context.bizEnBigName}JobClient {
+
+    private String PREFIX = "/${context.moduleName}/${context.bizEnName}/";
+
+    @Resource
+    ${context.bizEnBigName}Service ${context.bizEnName}Service;
+   public void $(context.entityName)Send(Map dataMap,Map jobMap){
+        List<${context.bizEnBigName}> list= ${context.bizEnName}Service.selectByMap(map);
+        Map<String,Object> rootMap = new HashMap<>();
+        Map<String,Object> contentMap = new HashMap<>();
+        List<Map> dataList = new ArrayList<>();
+        //封装报文
+        for(${context.bizEnBigName} ${context.bizEnName} : list){
+            Map<String,Object> param = new HashMap<>();
+            param.put("${context.bizEnName}Id",${context.bizEnName}.getId);
+            List<${context.bizSonEnName}> ${context.bizSonEnName}List = ${context.bizSonEnName}Service.selectByMap(param);
+            Map<String,Object> ${context.bizEnName}Map = new HashMap<>();
+            ${context.bizEnName}Map.put("${context.bizEnName}",${context.bizEnName});
+            ${context.bizEnName}Map.put("${context.bizSonEnName}s",${context.bizSonEnName}List);
+            dataList.add(${context.bizEnName}Map);
+        }
+        contentMap.put(${context.bizEnName}s,dataList);
+        rootMap.put("content",contentMap);
+        String requestStr = JSON.toJSONString(rootMap);
+        SchedulerConfig schedulerConfig = SchedulerConfigService.selectByMap().get(0);
+        String requestUrl = schedulerConfig.getUrl();
+        //向服务端发送报文
+        String resStr = HttpClientFactory.callByJsonHttpPost(requestUrl,requestStr);
+        ResponseParse responseParse =JSON.parseObject(resStr,ResponseParse.class);
+        List<ResultParse> responseParses = JSON.parseObject(resStr,List.class);
+        if("1000".equal(responseParse.resCode)){
+             for(ResultParse resultParse:responseParses){
+                  ${context.bizEnBigName} ${context.bizEnName} = ${context.bizEnName}Service.selectById(resultParse.getId());
+                  if("10000".equal(resultParse.resultCode)){
+                      ${context.bizEnName}.setType(1);
+                      ${context.bizEnName}.setDesc(resultParse.resultDesc);
+                      ${context.bizEnName}Service.updateById(${context.bizEnName});
+                  }else{
+                      ${context.bizEnName}.setType(2);
+                      ${context.bizEnName}.setDesc(resultParse.resultDesc);
+                      ${context.bizEnName}Service.updateById(${context.bizEnName});
+                  }
+             }
+
+        }
+   }
+
+}

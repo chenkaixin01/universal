@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenkx.universal.common.persistence.dao.SchedulerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.chenkx.universal.common.persistence.model.SchedulerConfig">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="cron" property="cron" />
+        <result column="init_param" property="initParam" />
+        <result column="param_desc" property="paramDesc" />
+        <result column="job_class" property="jobClass" />
+        <result column="scheduler_group" property="schedulerGroup" />
+        <result column="url" property="url" />
+        <result column="token_url" property="tokenUrl" />
+        <result column="conn_type" property="connType" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, cron, init_param AS initParam, param_desc AS paramDesc, job_class AS jobClass, scheduler_group AS schedulerGroup, url, token_url AS tokenUrl, conn_type AS connType, remark
+    </sql>
+
+</mapper>

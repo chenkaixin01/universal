@@ -1,0 +1,35 @@
+package ${job.packageName};
+
+<% for(import in controller.imports!){ %>
+import ${import};
+<% } %>
+
+/**
+ * ${context.bizChName}调度
+ *
+ * @author chenkx
+ * @Date ${tool.currentTime()}
+ */
+
+public class ${context.bizEnBigName}Job implements Job {
+
+    private String PREFIX = "/${context.moduleName}/${context.bizEnName}/";
+
+    @Resource
+    ${context.bizEnBigName}JobClient ${context.bizEnName}JobClient;
+    @Override
+    public void execute(JobExecutionContext arg0) throws JobExecutionException {
+
+        Map<String,Object> map  = arg0.getJobDetail().getJobDataMap();
+        Map jobMap = new HashMap();
+        jobMap.put("name",arg0.getJobDetail().getKey().getName());
+        jobMap.put("schedulerGroup",arg0.getJobDetail().getKey().getGroup());
+        Map<String,Object> dataMap = new HashMap<>();
+        <% for(jobParam in controller.jobParams!){ %>
+        dataMap.put(${jobParam},Integer.parseInt(map.get(<%jobParamLP.index%>))
+        <% } %>
+        ${context.bizEnName}JobClient.${context.bizEnName}Client(dataMap,jobMap);
+
+    }
+
+}
